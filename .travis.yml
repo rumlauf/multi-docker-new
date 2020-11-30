@@ -11,15 +11,15 @@ script:
   - docker run -e CI=true rumlauf/react-test npm test
 
 after_success:
-  - docker build -t rumlauf /multi-client ./client
-  - docker build -t rumlauf /multi-nginx ./nginx
-  - docker build -t rumlauf /multi-server ./server
-  - docker build -t rumlauf /multi-worker ./worker
+  - docker build -t rumlauf/multi-client ./client
+  - docker build -t rumlauf/multi-nginx ./nginx
+  - docker build -t rumlauf/multi-server ./server
+  - docker build -t rumlauf/multi-worker ./worker
   # Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to docker hub
-  - docker push rumlauf /multi-client
-  - docker push rumlauf /multi-nginx
-  - docker push rumlauf /multi-server
-  - docker push rumlauf /multi-worker
+  - docker push rumlauf/multi-client
+  - docker push rumlauf/multi-nginx
+  - docker push rumlauf/multi-server
+  - docker push rumlauf/multi-worker
 
