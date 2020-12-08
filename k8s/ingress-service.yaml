@@ -6,21 +6,27 @@ metadata:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-regex: 'true'
     nginx.ingress.kubernetes.io/rewrite-target: /$1
-    # removed per section 259: certmanager.k8s.io/cluster-issuer: 'letsencrypt-prod'
-    # removed per section 259: nginx.ingress.kubernetes.io/ssl-redirect: 'true'
-    # UPDATE THIS LINE ABOVE
+# removed per section 259: certmanager.k8s.io/cluster-issuer: 'letsencrypt-prod'
+# removed per section 259: nginx.ingress.kubernetes.io/ssl-redirect: 'true'
+# UPDATE THIS LINE ABOVE
 spec:
   rules:
     - http:
-      paths:
-        - path: /?(.*)
+        paths:
+          - path: /?(.*)
+            pathType: Prefix
+# UPDATE THIS LINE ABOVE
+            backend:
+              service:
+                name: client-cluster-ip-service
+                port:
+                  number: 3000
+          
+          - path: /api/?(.*)
     # UPDATE THIS LINE ABOVE
-          backend:
-            serviceName: client-cluster-ip-service
-            servicePort: 3000
-        - path: /api/?(.*)
-    # UPDATE THIS LINE ABOVE
-          backend:
-            serviceName: server-cluster-ip-service
-            servicePort: 5000
- 
+            pathType: Prefix
+            backend:
+              service:
+                name: server-cluster-ip-service
+                port:
+                  number: 5000
